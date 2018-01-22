@@ -14,6 +14,7 @@
         android:src="@mipmap/ic_launcher"/>
 
     <TextView
+        android:id="@+id/hed_name"
         android:text="Mangesh Yadav"
         android:layout_below="@id/image"
         android:layout_marginLeft="20dp"

@@ -3,6 +3,8 @@ package com.example.root.mytest;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -16,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +26,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -33,9 +37,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private ViewPager viewPager;
     private PagerAdapter adapter;
-
     private TabLayout tabLayout;
     private android.support.v7.widget.Toolbar toolbar;
+    private TextView title,n;
 
 
 
@@ -53,6 +57,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ImageView imageView=findViewById(R.id.nav_menu);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
+
+       // String name=;
+
+        //Log.d("", "onCreate: "+name);
+
+           n=findViewById(R.id.hed_name);
+
+        title=findViewById(R.id.title);
+
+//        n.setText(LoginActivity.preferences.getString("name",null));
+        title.setText(getIntent().getStringExtra("namee"));
 
 
          NavigationView navigationView=(NavigationView)findViewById(R.id.navi);
@@ -101,9 +116,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.main_menu,menu);
 
 
+        return true;
+    }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (R.id.logout==item.getItemId())
+        {
+
+           startActivity(new Intent(context,LoginActivity.class));
+           finish();
+            SharedPreferences.Editor editor=LoginActivity.preferences.edit();
+          editor.putBoolean("flag",false).apply();
+        }
+
+        return super.onOptionsItemSelected(item);
+
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
