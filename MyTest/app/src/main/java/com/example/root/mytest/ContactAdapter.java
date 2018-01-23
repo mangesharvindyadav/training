@@ -212,6 +212,11 @@ public class ContactAdapter extends BaseExpandableListAdapter {
 
 
 
+
+
+
+
+
     @Override
     public boolean isChildSelectable(int i, int i1) {
         return true;

@@ -65,7 +65,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         intent.putExtra("my",flag);
         PendingIntent pendingIntent=PendingIntent.getBroadcast(context,2,intent,0);
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+5000,pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,System.currentTimeMillis()+10000,pendingIntent);
 
 
 

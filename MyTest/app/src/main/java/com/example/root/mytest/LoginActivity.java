@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (!name.equals("") && !pass.equals("")) {
                     for (int i = 0; i < list.length; i++) {
                         if (name.equals(list[i]) && pass.equals("ajay") && !remem.isChecked()) {
-                            Intent intent = new Intent(context, MainActivity.class);
+                            Intent intent = new Intent(context, CheckActivity.class);
                             intent.putExtra("namee", list[i]);
                             startActivity(intent);
 
@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putBoolean("flag", true);
                             editor.apply();
 
-                            Intent intent = new Intent(context, MainActivity.class);
+                            Intent intent = new Intent(context, CheckActivity.class);
                             intent.putExtra("namee", list[i]);
                             startActivity(intent);
 
@@ -120,6 +120,10 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
 
+                }
+
+                else {
+                    Toast.makeText(context, "Invalid Credential", Toast.LENGTH_SHORT).show();
                 }
 
 
