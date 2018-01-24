@@ -2,6 +2,7 @@ package com.example.root.mytest;
 
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,16 +20,23 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+
 
 
 /**
@@ -36,6 +44,8 @@ import java.util.ArrayList;
  */
 public class GallaryFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,AdapterView.OnItemClickListener {
 
+
+    private static final String TAG = "GallaryFragment";
 
     private static final int IMAGE_CODE = 525;
 
@@ -61,12 +71,13 @@ public class GallaryFragment extends Fragment implements LoaderManager.LoaderCal
 
     private static final String[] PROJECTION =new String[]
 
-            {
+            {MediaStore.Images.Thumbnails.DATA,
                     MediaStore.Images.Thumbnails._ID,
-                    MediaStore.Images.Thumbnails.DATA
+
 
             };
 
+    ImageView  imageView;
     private GridView gridView;
     private SimpleCursorAdapter cursorAdapter;
 
@@ -86,20 +97,26 @@ public class GallaryFragment extends Fragment implements LoaderManager.LoaderCal
 
 
             cursorAdapter=new SimpleCursorAdapter(getActivity(),R.layout.imageview,null,
-                    COLOUMNs,IDS);
+                    PROJECTION,IDS,0);
 
 
             gridView.setAdapter(cursorAdapter);
 
             gridView.setOnItemClickListener(this);
 
-            getLoaderManager().initLoader(425,null,this);
+            getLoaderManager().initLoader(23,null,this);
+
+
 
             return view;
         }
         return null;
 
     }
+
+
+
+
 
 
     public boolean checkPermission()
@@ -139,21 +156,17 @@ public class GallaryFragment extends Fragment implements LoaderManager.LoaderCal
             case IMAGE_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    new GallaryFragment().onCreateLoader(425,null);
+                    new GallaryFragment().onCreateLoader(23,null);
 
                 } else {
                     //code for deny
 
                 }
-
-
-
         }
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
 
         return new CursorLoader(getContext(),MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
                 PROJECTION,null,null,null);
@@ -162,7 +175,30 @@ public class GallaryFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
-        cursorAdapter.swapCursor(data);
+        uriArrayList=new ArrayList<>();
+
+
+
+
+        while (data.moveToNext()) {
+
+
+            String _id = data.getString(data.getColumnIndex(MediaStore.Images.Thumbnails._ID));
+
+            Uri uri = Uri.withAppendedPath(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, _id);
+
+            uriArrayList.add(uri);
+
+
+        }
+
+//   for (int i=0;i<uriArrayList.size();i++)
+//      {
+//          Picasso.with(getActivity()).load(uriArrayList.get(i)).into(imageView);
+//       }
+//
+//        Log.d("TAG", "onItemClick: "+uriArrayList);
+       cursorAdapter.swapCursor(data);
 
     }
 
@@ -176,26 +212,12 @@ public class GallaryFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        Cursor cursor = cursorAdapter.getCursor();
-
-        uriArrayList=new ArrayList<>();
-
-        while (cursor.moveToNext()) {
-
-            String _id = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media._ID));
-
-            Uri uri = Uri.withAppendedPath(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, _id);
-
-            uriArrayList.add(uri);
-        }
-
-
 
         Intent intent=new Intent(getContext(),GallaryActivity.class);
         intent.putExtra("position",position);
         intent.putParcelableArrayListExtra("mylist",uriArrayList);
 
-        Log.d("TAG", "onItemClick: "+uriArrayList);
+
 
         startActivity(intent);
 

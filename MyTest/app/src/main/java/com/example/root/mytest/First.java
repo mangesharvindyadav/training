@@ -52,10 +52,7 @@ public class First extends Fragment implements LoaderManager.LoaderCallbacks<Cur
     private final static int[] IDS={R.id.contact_name};
 
     private ListView listView;
-    private long contact_id;
-    private String contact_key;
 
-    private URI uri;
     private SimpleCursorAdapter cursorAdapter;
 
     public First() {
