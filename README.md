@@ -1,2 +1,2 @@
-# training
-sample projects
+# training 
+sample project
