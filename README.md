@@ -1,5 +1,4 @@
 # training project
-sample 
 
 
 
